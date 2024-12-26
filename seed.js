@@ -50,7 +50,7 @@ async function seedData() {
 
         const db = client.db("DocProfileDB"); 
         const collection = db.collection("DocProfiles");
-        const docs = Array.from({ length: 5 }, () => {
+        const docs = Array.from({ length: 1500 }, () => {
             const fullText = generateLongText(1000, 1500);
             return {
                 docId: uuidv4(),
