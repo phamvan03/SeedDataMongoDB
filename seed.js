@@ -23,31 +23,23 @@ function removeAccent(input) {
 function generateLongText() {
     let text = '';
     let wordCount = 0;
-
-    // Sử dụng faker.lorem.sentence để tạo ra các câu
-    // Chúng ta sẽ tạo nhiều câu cho đến khi đạt được độ dài mong muốn
     while (wordCount < 1000) {
         let sentence = faker.lorem.sentence();
-        wordCount += sentence.split(' ').length; // Đếm số lượng từ trong câu
+        wordCount += sentence.split(' ').length;
         text += sentence + ' ';
     }
-
-    // Nếu văn bản ngắn hơn 1000 chữ, chúng ta tiếp tục thêm văn bản
     while (wordCount < 1500) {
         let sentence = faker.lorem.sentence();
         wordCount += sentence.split(' ').length;
         text += sentence + ' ';
     }
-
-    return text.trim(); // Trả về văn bản đã được tạo
+    return text.trim();
 }
 async function seedData() {
     const client = new MongoClient(uri);
 
     try {
         await client.connect();
-        console.log('ok.');
-
         const db = client.db("DocProfileDB"); 
         const collection = db.collection("DocProfiles");
         const docs = Array.from({ length: 1500 }, () => {
@@ -71,39 +63,37 @@ async function seedData() {
                 docView:  faker.number.int({ min: 0, max: 1000 }), 
                 docStatus: faker.number.int({ min: -1, max: 2 }),
                 docInitBy: faker.internet.userName(),
-            docInitTime: faker.date.recent(),
-            docAuthBy: faker.internet.userName(),
-            docAuthTime: faker.date.recent(),
-            docIsAuth: faker.number.int({ min: 0, max: 1 }),
-            docVersion: faker.system.semver(),
-            docOriginal: faker.number.int({ min: 0, max: 1 }),
-            docQA: faker.word.adjective(),
-            docIsShow: faker.helpers.arrayElement(['Y', 'N']),
-            docNgayHetHieuLuc: faker.date.future(),
-            docParent: uuidv4(),
-            docLinkVBThayThe: faker.internet.url(),
-            docVBSuaDoiId: uuidv4(),
-            docLinkVBSuaDoi: faker.internet.url(),
-            docVBHopNhatId: uuidv4(),
-            docLinkVBHopNhat: faker.internet.url(),
-            docNoiGuiNhan: faker.address.streetAddress(),
-            docNgayBanHanh: faker.date.past(),
-            docKinhChuyen: faker.lorem.sentence(),
-            docIsClose: faker.number.int({ min: 0, max: 1 }),
-            docHoTenNgKy: faker.person.fullName(),
-            docPath_QA: `/documents/qa-${faker.system.fileName()}`,
-            docFullText_QA: faker.lorem.text(),
-            docUpdateTime: faker.date.recent(),
-            docCatList: faker.word.adjective(),
-            docAddress: faker.address.streetAddress(),
-            docDeleteAt: null,
+                docInitTime: faker.date.recent(),
+                docAuthBy: faker.internet.userName(),
+                docAuthTime: faker.date.recent(),
+                docIsAuth: faker.number.int({ min: 0, max: 1 }),
+                docVersion: faker.system.semver(),
+                docOriginal: faker.number.int({ min: 0, max: 1 }),
+                docQA: faker.word.adjective(),
+                docIsShow: faker.helpers.arrayElement(['Y', 'N']),
+                docNgayHetHieuLuc: faker.date.future(),
+                docParent: uuidv4(),
+                docLinkVBThayThe: faker.internet.url(),
+                docVBSuaDoiId: uuidv4(),
+                docLinkVBSuaDoi: faker.internet.url(),
+                docVBHopNhatId: uuidv4(),
+                docLinkVBHopNhat: faker.internet.url(),
+                docNoiGuiNhan: faker.address.streetAddress(),
+                docNgayBanHanh: faker.date.past(),
+                docKinhChuyen: faker.lorem.sentence(),
+                docIsClose: faker.number.int({ min: 0, max: 1 }),
+                docHoTenNgKy: faker.person.fullName(),
+                docPath_QA: `/documents/qa-${faker.system.fileName()}`,
+                docFullText_QA: faker.lorem.text(),
+                docUpdateTime: faker.date.recent(),
+                docCatList: faker.word.adjective(),
+                docAddress: faker.address.streetAddress(),
+                docDeleteAt: null,
             };
         });
         const result = await collection.insertMany(docs);
-
-        console.log('OK');
     } catch (err) {
-        console.error('loi', err);
+        console.error('err:', err);
     } finally {
         await client.close();
     }
